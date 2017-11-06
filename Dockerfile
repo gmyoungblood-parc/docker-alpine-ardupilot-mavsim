@@ -31,10 +31,6 @@ RUN apk update && apk add --no-cache \
 RUN pip install sqlalchemy \
   geopy
 
-# Update ArduPilot in case default container is old
-WORKDIR "/ardupilot"
-RUN git pull
-
 # Get MAVSim from public repository
 WORKDIR "/"
 RUN git clone git@gitlab.com:gmyoungblood-parc/mavsim-public.git
