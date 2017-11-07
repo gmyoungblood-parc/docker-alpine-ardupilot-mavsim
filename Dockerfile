@@ -31,9 +31,13 @@ RUN apk update && apk add --no-cache \
 RUN pip install sqlalchemy \
   geopy
 
+ADD mavsim_run.sh /
+RUN chmod +x /mavsim_run.sh
+
 # Get MAVSim from public repository
 WORKDIR "/"
-RUN git clone git@gitlab.com:gmyoungblood-parc/mavsim-public.git
+RUN git clone https://gitlab.com/gmyoungblood-parc/mavsim-public.git
+RUN mv /mavsim-public /mavsim
 
 # Execution Setup for sim_vehicle autorun
 ENV ENV="/etc/profile"
@@ -42,7 +46,7 @@ ENV SPEEDUP 1
 ENV LOGGING_DATABASE "postgresql://postgres:123456@docker.for.mac.localhost:33121/apm_missions"
 ENV MAVSIM_OPTIONS ""
 
-WORKDIR "/mavsim"
-ENTRYPOINT . /etc/profile && mavsim.py $MAVSIM_OPTIONS
+# WORKDIR "/mavsim"
+ENTRYPOINT ["/mavsim_run.sh"]
 
 # fin.
